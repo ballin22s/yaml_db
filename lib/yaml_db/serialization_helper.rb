@@ -10,9 +10,9 @@ module YamlDb
         @extension = helper.extension
       end
 
-      def dump(filename)
+      def dump(filename, table = nil)
         disable_logger
-        @dumper.dump(File.new(filename, "w"))
+        @dumper.dump(File.new(filename, "w"), table)
         reenable_logger
       end
 
@@ -27,9 +27,9 @@ module YamlDb
         end
       end
 
-      def load(filename, truncate = true)
+      def load(filename, truncate = true, table = nil)
         disable_logger
-        @loader.load(File.new(filename, "r"), truncate)
+        @loader.load(File.new(filename, "r"), truncate, table)
         reenable_logger
       end
 
@@ -53,7 +53,7 @@ module YamlDb
     end
 
     class Load
-      def self.load(io, truncate = true)
+      def self.load(io, truncate = true, table = nil)
         ActiveRecord::Base.connection.transaction do
           load_documents(io, truncate)
         end
@@ -145,7 +145,13 @@ module YamlDb
 
       end
 
-      def self.dump(io)
+      def self.dump(io, table = nil)
+        if table
+          before_table(io, table)
+          dump_table(io, table)
+          after_table(io, table)
+          return
+        end
         tables.each do |table|
           before_table(io, table)
           dump_table(io, table)
