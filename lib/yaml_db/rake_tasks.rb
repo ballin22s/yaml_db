@@ -1,7 +1,7 @@
 module YamlDb
   module RakeTasks
     def self.data_dump_task
-      SerializationHelper::Base.new(helper).dump(db_dump_data_file(helper.extension))
+      SerializationHelper::Base.new(helper).dump(db_dump_data_file, args[:table])
     end
 
     def self.data_dump_dir_task
@@ -10,7 +10,7 @@ module YamlDb
     end
 
     def self.data_load_task
-      SerializationHelper::Base.new(helper).load(db_dump_data_file(helper.extension))
+      SerializationHelper::Base.new(helper).load(db_dump_data_file, helper.extension, args[:table])
     end
 
     def self.data_load_dir_task
