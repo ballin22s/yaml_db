@@ -14,7 +14,7 @@ This gem supports Rails 3.x and 4.x.  For Rails 2, clone and checkout the Rails2
 
 Simply add to your Gemfile:
 
-    gem 'yaml_db'
+    gem 'yaml_db', :git => 'git://github.com/ballin22s/yaml_db.git'
 
 All rake tasks will then be available to you.
 
